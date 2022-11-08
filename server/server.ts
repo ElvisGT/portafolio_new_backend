@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import fUpload from 'express-fileupload';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -33,6 +34,7 @@ export default class Server {
   private middlewares(){
     this.app.use(cors());
     this.app.use(express.json());
+    this.app.use(fUpload());
   }
 
   private routes(){

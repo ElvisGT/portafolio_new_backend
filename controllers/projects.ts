@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
+import { FileArray, UploadedFile } from 'express-fileupload';
 import MongoDB from "../classes/MongoDB";
+import { fileUploadServer } from '../helpers/file_upload';
+
 
 const getProjects = (req: Request,res: Response) => {
   const projects = MongoDB.all_projects;
@@ -18,9 +21,15 @@ const getProjectID = (req: Request,res: Response) => {
   });
 }
 
-const createProject = (req: Request,res: Response) => {
-  const body = req.body;
+const createProject = async(req: Request,res: Response) => {
+  const body = req.body;  
+  const files: FileArray = req.files as FileArray; 
 
+  //Subir archivo al servidor
+  const savedFile = await fileUploadServer(files);
+
+  console.log(savedFile)
+  
   MongoDB.saveDB(body);
 
   res.json({
