@@ -3,13 +3,12 @@ import cors from 'cors';
 import fUpload from 'express-fileupload';
 import dotenv from 'dotenv';
 dotenv.config();
+import {Paths} from '../types';
+import connectionDB from '../config/database';
 
 //Routes
 import projects from '../routes/projects';
 
-type Paths = {
-  projects: string
-}
 
 
 export default class Server {
@@ -23,6 +22,9 @@ export default class Server {
     this.paths = {
       projects:'/projects'
     }
+    
+    //Conectar a la base de datos
+    connectionDB;
 
     //Middlewares
     this.middlewares();

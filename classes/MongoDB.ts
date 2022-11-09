@@ -1,5 +1,4 @@
 
-
 export default class MongoDB {
   private projects: any[];
   private static _instace:MongoDB;
@@ -13,7 +12,7 @@ export default class MongoDB {
   }
 
   public static saveDB(project: Object){
-    this.instance.projects.push(project);
+
   }
 
   public static updateDB(id: string,project: Object){

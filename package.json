@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "cpFiles": "copyfiles --up 1 uploads/*[.jpg,.jpeg,.png] dist/uploads"
+    "cpFiles": "tsc && copyfiles --up 1 uploads/* dist/uploads",
+    "start":"npm run cpFiles && node dist/index.js"
   },
   "keywords": [
     "javascript",

@@ -4,7 +4,7 @@ import path from 'path';
 
 
 
-export const fileUploadServer = (files: FileArray) => {
+export const fileUploadServer = (files: FileArray): Promise<string> => {
   return new Promise((resolve, reject) => {
     //Verificar si hay archivo en la peticion
     if (!files) {
@@ -25,7 +25,7 @@ export const fileUploadServer = (files: FileArray) => {
 
     const savePath = path.join(
       __dirname,
-      "../uploads/",
+      "../uploads",
       fileName
     );
 
