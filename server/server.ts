@@ -7,7 +7,7 @@ import {Paths} from '../types';
 import connectionDB from '../config/database';
 
 //Routes
-import projects from '../routes/projects';
+import {projects,technologies} from '../routes';
 
 
 
@@ -20,7 +20,8 @@ export default class Server {
     this.app = express();
     this.port = process.env.PORT || 8080;
     this.paths = {
-      projects:'/projects'
+      projects:'/projects',
+      technologies:'/technologies'
     }
     
     //Conectar a la base de datos
@@ -41,6 +42,7 @@ export default class Server {
 
   private routes(){
     this.app.use(this.paths.projects,projects);
+    this.app.use(this.paths.technologies,technologies);
   }
 
   public listen(){

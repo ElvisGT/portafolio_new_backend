@@ -1,4 +1,5 @@
 
 export type Paths = {
-  projects: string
+  projects: string,
+  technologies: string,
 }

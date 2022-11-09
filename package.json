@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "cpFiles": "tsc && copyfiles --up 1 uploads/* dist/uploads",
-    "start":"npm run cpFiles && node dist/index.js"
+    "start": "npm run cpFiles && node dist/index.js"
   },
   "keywords": [
     "javascript",
@@ -22,6 +22,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-fileupload": "^1.4.0",
+    "express-validator": "^6.14.2",
     "mongoose": "^6.7.2",
     "uuid": "^9.0.0"
   },

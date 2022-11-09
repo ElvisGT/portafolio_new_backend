@@ -3,43 +3,41 @@ import {check} from 'express-validator';
 import { validation } from '../middlewares/validation';
 import { validateName } from '../middlewares/validate-name';
 import { validateID } from '../middlewares/validate-id';
-import { createProject, 
-          deleteProjectID, 
-          getProjectID, 
-          getProjects, 
-          updateProjectID } from "../controllers/projects";
+import { createTech, 
+          deleteTechID,
+          updateTechID, 
+          getTech, 
+          getTechID, 
+           } from "../controllers/technologies";
 
 const router = Router();
 
-//Obtener proyectos
-router.get("/",getProjects);
+//Obtener tecnologia 
+router.get("/",getTech);
 
-//Obtener proyecto por id
+//Obtener tecnologia por id
 router.get("/:id",[
   check("id","No es un id valido de MongoDB").isMongoId(),
   validation
-],getProjectID);
+],getTechID);
 
-//Crear proyecto
+//Crear tecnologia
 router.post("/",[
-  check("name").custom(validateName),
-  validation
-],createProject);
+],createTech);
 
-//Actualizar proyecto por id
+//Actualizar tecnologia por id
 router.put("/:id",[
   check("id","No es un id valido de MongoDB").isMongoId(),
-  check("name").custom(validateName),
   check("id").custom(validateID),
   validation
-],updateProjectID);
+],updateTechID);
 
-//Eliminar proyecto por id
+//Eliminar tecnologia por id
 router.delete("/:id",[
   check("id","No es un id valido de MongoDB").isMongoId(),
   check("id").custom(validateID),
   validation
-],deleteProjectID);
+],deleteTechID);
 
 
 export default router;

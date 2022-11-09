@@ -1,16 +1,15 @@
 import { Request, Response } from "express";
-import { FileArray, UploadedFile } from 'express-fileupload';
-import {MongoDB} from "../classes/MongoDB";
+import { FileArray } from 'express-fileupload';
 import { fileUploadServer, 
           deleteFiles, 
           uploadCloudinary} from '../helpers';
+import { Project } from "../models/project";
 import { ProjectType } from '../types/project';
 
-//Instancia de Clase MongoDB
-const mongodb = new MongoDB();
 
 const getProjects = async(req: Request,res: Response) => {
-  const projects = await mongodb.all_projects();
+  const projects = await Project.find({});
+
   res.json({
     results:projects
   })
@@ -19,8 +18,8 @@ const getProjects = async(req: Request,res: Response) => {
 const getProjectID = async(req: Request,res: Response) => {
   const {id} = req.params;
 
-  const project = await mongodb.projectID(id);
-
+  const project = await Project.findById(id);
+  
   res.json({
     ok:true,
     project
@@ -51,6 +50,7 @@ const createProject = async(req: Request,res: Response) => {
   //Limpiar server
   deleteFiles();
 
+
   //SaveData
   const data: ProjectType = {
     name,
@@ -59,10 +59,11 @@ const createProject = async(req: Request,res: Response) => {
     deploy,
     tag,
     hashTags,
-    imgUrl:savedImg as string
+    imgUrl: savedImg as string
   }
 
-  await mongodb.saveDB(data);
+  const save_project = await new Project(data);
+  save_project.save();
   
   res.status(201).json({
     ok:true,
@@ -80,7 +81,8 @@ const updateProjectID = async(req: Request,res: Response) => {
     rest
   }
 
-  await mongodb.updateDB(id,data);
+
+  await Project.findByIdAndUpdate(id,data);
 
   res.json({
     ok:true,
@@ -92,7 +94,8 @@ const updateProjectID = async(req: Request,res: Response) => {
 const deleteProjectID = async(req: Request,res: Response) => {
   const {id} = req.params;
 
-  await mongodb.deleteDB(id);
+  await Project.findByIdAndDelete(id);
+  
 
   res.json({
     ok:true,
