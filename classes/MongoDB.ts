@@ -1,37 +1,46 @@
+import { Project } from '../models/project';
+import { ProjectType } from '../types';
 
-export default class MongoDB {
-  private projects: any[];
-  private static _instace:MongoDB;
+export class MongoDB {
 
-  private constructor(){
-    this.projects = [];
+  constructor(){
+    this.all_projects();
   }
 
-  private static get instance(){
-    return this._instace ? this._instace : this._instace = new MongoDB();
+  public async saveDB({ name,
+    description,
+    repo,
+    imgUrl,
+    tag,
+    deploy,
+    hashTags }: ProjectType) {
+    const save_project = await new Project({
+      name,
+      description,
+      repo,
+      imgUrl,
+      tag,
+      deploy,
+      hashTags
+    });
+    await save_project.save();
   }
 
-  public static saveDB(project: Object){
-
+  public async updateDB(id: string, project: Object) {
+    await Project.findByIdAndUpdate(id,project);
   }
 
-  public static updateDB(id: string,project: Object){
-    const projectIndex = this.instance.projects.findIndex(item => item.id === id);
-
-    if(projectIndex !== -1 ){
-      this.instance.projects[projectIndex] = project;
-    }
+  public async deleteDB(id: string) {
+   await Project.findByIdAndDelete(id);
   }
 
-  public static deleteDB(id: string){
-    const projectIndex = this.instance.projects.findIndex(item => item.id === id);
-
-    if(projectIndex !== -1 ){
-      this.instance.projects.splice(projectIndex,1);
-    }
+  public async all_projects(){
+    const projects = await Project.find({});
+    return projects;
   }
 
-  public static get all_projects(){
-    return this.instance.projects;
+  public async projectID(id: string) {
+    const project = Project.findById(id);
+    return project;
   }
 }

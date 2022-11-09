@@ -1,60 +1,86 @@
 import { Request, Response } from "express";
 import { FileArray, UploadedFile } from 'express-fileupload';
-import MongoDB from "../classes/MongoDB";
-import { fileUploadServer } from '../helpers/file_upload';
-import {deleteFiles} from '../helpers/delete-files';
-import { uploadCloudinary } from "../helpers/upload-cloudinary";
+import {MongoDB} from "../classes/MongoDB";
+import { fileUploadServer, 
+          deleteFiles, 
+          uploadCloudinary} from '../helpers';
+import { ProjectType } from '../types/project';
 
+//Instancia de Clase MongoDB
+const mongodb = new MongoDB();
 
-const getProjects = (req: Request,res: Response) => {
-  const projects = MongoDB.all_projects;
-
-  res.json(projects);
+const getProjects = async(req: Request,res: Response) => {
+  const projects = await mongodb.all_projects();
+  res.json({
+    results:projects
+  })
 }
 
-const getProjectID = (req: Request,res: Response) => {
+const getProjectID = async(req: Request,res: Response) => {
   const {id} = req.params;
 
-  const project = MongoDB.all_projects.filter(item => item.id === id);
+  const project = await mongodb.projectID(id);
 
   res.json({
     ok:true,
-    results:project
+    project
   });
 }
 
 const createProject = async(req: Request,res: Response) => {
-  const body = req.body;  
-  const files: FileArray = req.files as FileArray; 
-
+  const {name,
+          description,
+          repo,
+          tag,
+          hashTags,
+          deploy}: ProjectType = req.body;  
+  
+          
   //Tratamiento de imagenes
-  const savedImg = await fileUploadServer(req.files as FileArray)
-      .then((path: string) => console.log(path))
+  const files: FileArray = req.files as FileArray; 
+  const savedImg = await fileUploadServer(files)
+      .then((path: string) =>{
         //Subida a cloudinary
-      //   return uploadCloudinary(path);
-      // })
-      // .then((img) => {
-      //   return img;
-      // })
+        return uploadCloudinary(path);
+      })
+      .then((img) => {
+        return img;
+      })
       .catch((msg) => res.status(400).json({ msg }));
 
   //Limpiar server
   deleteFiles();
-  
-  MongoDB.saveDB(body);
 
-  res.json({
+  //SaveData
+  const data: ProjectType = {
+    name,
+    description,
+    repo,
+    deploy,
+    tag,
+    hashTags,
+    imgUrl:savedImg as string
+  }
+
+  await mongodb.saveDB(data);
+  
+  res.status(201).json({
     ok:true,
     msg:"Creado exitosamente",
-    body
   })
 }
 
-const updateProjectID = (req: Request,res: Response) => {
+const updateProjectID = async(req: Request,res: Response) => {
   const {id} = req.params;
-  const body = req.body;
+  const { name,...rest}: ProjectType = req.body;
 
-  MongoDB.updateDB(id,body);
+  //SaveData
+  const data = {
+    name,
+    rest
+  }
+
+  await mongodb.updateDB(id,data);
 
   res.json({
     ok:true,
@@ -63,10 +89,10 @@ const updateProjectID = (req: Request,res: Response) => {
   
 }
 
-const deleteProjectID = (req: Request,res: Response) => {
+const deleteProjectID = async(req: Request,res: Response) => {
   const {id} = req.params;
 
-  MongoDB.deleteDB(id);
+  await mongodb.deleteDB(id);
 
   res.json({
     ok:true,
