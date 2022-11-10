@@ -8,9 +8,14 @@ import { ProjectType } from '../types/project';
 
 
 const getProjects = async(req: Request,res: Response) => {
-  const projects = await Project.find({});
+
+  const [total,projects] = await Promise.all([
+    Project.find({}).countDocuments(),
+    Project.find({})
+  ])
 
   res.json({
+    total,
     results:projects
   })
 }

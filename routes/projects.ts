@@ -17,27 +17,28 @@ router.get("/",getProjects);
 //Obtener proyecto por id
 router.get("/:id",[
   check("id","No es un id valido de MongoDB").isMongoId(),
+  check("id").custom((value) => validateID(value,'Project')),
   validation
 ],getProjectID);
 
 //Crear proyecto
 router.post("/",[
-  check("name").custom(validateName),
+  check("name").custom((value) => validateName(value,"Project")),
   validation
 ],createProject);
 
 //Actualizar proyecto por id
 router.put("/:id",[
   check("id","No es un id valido de MongoDB").isMongoId(),
-  check("name").custom(validateName),
-  check("id").custom(validateID),
+  check("name").custom((value) => validateName(value,"Project")),
+  check("id").custom((value) => validateID(value,'Project')),
   validation
 ],updateProjectID);
 
 //Eliminar proyecto por id
 router.delete("/:id",[
   check("id","No es un id valido de MongoDB").isMongoId(),
-  check("id").custom(validateID),
+  check("id").custom((value) => validateID(value,'Project')),
   validation
 ],deleteProjectID);
 

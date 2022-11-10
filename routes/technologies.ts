@@ -18,24 +18,28 @@ router.get("/",getTech);
 //Obtener tecnologia por id
 router.get("/:id",[
   check("id","No es un id valido de MongoDB").isMongoId(),
+  check("id").custom((value) => validateID(value,"Technology")),
   validation
 ],getTechID);
 
 //Crear tecnologia
 router.post("/",[
+  check("name").custom((value) => validateName(value,"Technology")),
+  validation
 ],createTech);
 
 //Actualizar tecnologia por id
 router.put("/:id",[
   check("id","No es un id valido de MongoDB").isMongoId(),
-  check("id").custom(validateID),
+  check("id").custom((value) => validateID(value,"Technology")),
+  check("name").custom((value) => validateName(value,"Technology")),
   validation
 ],updateTechID);
 
 //Eliminar tecnologia por id
 router.delete("/:id",[
   check("id","No es un id valido de MongoDB").isMongoId(),
-  check("id").custom(validateID),
+  check("id").custom((value) => validateID(value,"Technology")),
   validation
 ],deleteTechID);
 

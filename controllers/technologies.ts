@@ -8,21 +8,26 @@ import { TechnologyType } from '../types';
 
 
 const getTech = async(req: Request,res: Response) => {
-  const projects = await Technology.find({});
+
+  const [total,technologies] = await Promise.all([
+    Technology.find({}).countDocuments(),
+    Technology.find({})
+  ])
 
   res.json({
-    results:projects
+    total,
+    results:technologies
   })
 }
 
 const getTechID = async(req: Request,res: Response) => {
   const {id} = req.params;
 
-  const project = await Technology.findById(id);
+  const technology = await Technology.findById(id);
   
   res.json({
     ok:true,
-    project
+    technology
   });
 }
 
@@ -48,7 +53,7 @@ const createTech = async(req: Request,res: Response) => {
   //SaveData
   const data: TechnologyType = {
     name,
-    imgUrl: savedImg as string
+    imgUrl:savedImg as string
   }
 
   const save_tech = await new Technology(data);
