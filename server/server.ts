@@ -3,11 +3,11 @@ import cors from 'cors';
 import fUpload from 'express-fileupload';
 import dotenv from 'dotenv';
 dotenv.config();
-import {Paths} from '../types';
-import connectionDB from '../config/database';
+import { Paths } from '../types';
+import { connectionDB } from '../config/database';
 
 //Routes
-import {projects,technologies} from '../routes';
+import {projects,technologies,login} from '../routes';
 
 
 
@@ -21,11 +21,12 @@ export default class Server {
     this.port = process.env.PORT || 8080;
     this.paths = {
       projects:'/projects',
-      technologies:'/technologies'
+      technologies:'/technologies',
+      login:'/login'
     }
     
     //Conectar a la base de datos
-    connectionDB;
+    this.connectDB();
 
     //Middlewares
     this.middlewares();
@@ -43,11 +44,16 @@ export default class Server {
   private routes(){
     this.app.use(this.paths.projects,projects);
     this.app.use(this.paths.technologies,technologies);
+    this.app.use(this.paths.login,login);
   }
 
   public listen(){
     this.app.listen(this.port,() => {
       console.log(`Servidor corriendo en el puerto http://localhost:${this.port}`);
     })
+  }
+
+  private async connectDB(){
+    await connectionDB;
   }
 }

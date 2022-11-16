@@ -3,6 +3,7 @@ import {check} from 'express-validator';
 import { validation } from '../middlewares/validation';
 import { validateName } from '../middlewares/validate-name';
 import { validateID } from '../middlewares/validate-id';
+import { verifyJWT } from '../middlewares/verify-JWT';
 import { createProject, 
           deleteProjectID, 
           getProjectID, 
@@ -23,6 +24,7 @@ router.get("/:id",[
 
 //Crear proyecto
 router.post("/",[
+  verifyJWT,
   check("name").custom((value) => validateName(value,"Project")),
   validation
 ],createProject);
