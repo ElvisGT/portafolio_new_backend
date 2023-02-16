@@ -1,5 +1,5 @@
 import { Project } from "../models/project";
-import { Technology } from "../models/technology";
+import { Technology } from "../models/skill";
 
 export const validateName = async (name: string, model: string) => {
 

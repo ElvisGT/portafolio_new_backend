@@ -3,7 +3,7 @@ import { FileArray } from 'express-fileupload';
 import { fileUploadServer, 
           deleteFiles, 
           uploadCloudinary} from '../helpers';
-import { Technology } from "../models/technology";
+import { Technology } from "../models/skill";
 import { TechnologyType } from '../types';
 
 

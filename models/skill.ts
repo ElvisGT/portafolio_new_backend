@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 
 
-const TechnologySchema: Schema = new Schema({
+const SkillSchema: Schema = new Schema({
   name:{
     type:String,
     required:true
@@ -11,10 +11,10 @@ const TechnologySchema: Schema = new Schema({
   },
 });
 
-TechnologySchema.methods.toJSON = function(){
+SkillSchema.methods.toJSON = function(){
   const {__v, ...rest} = this.toObject();
 
   return rest;
 }
 
-export const Technology = model("Technology",TechnologySchema);
+export const Technology = model("Technology",SkillSchema);

@@ -13,20 +13,18 @@ const ProjectSchema: Schema = new Schema({
   imgUrl:{
     type:String,
   },
-  repo:{
+  link:{
     type:String,
     required:true
   },
-  deploy:{
-    type:String,
-  },
-  tag:{
+  stack:{
     type:String,
     required:true
   },
-  hashTags:{
-    type:String,
-    default:['JavaScript']
+  technologies:{
+    type:Array<String>,
+    default:['JavaScript'],
+    required:true
   }
 });
 
