@@ -4,6 +4,7 @@ import path from 'path';
 
 
 
+
 export const fileUploadServer = (files: FileArray): Promise<string> => {
   return new Promise((resolve, reject) => {
     //Verificar si hay archivo en la peticion
@@ -13,11 +14,12 @@ export const fileUploadServer = (files: FileArray): Promise<string> => {
     const file: UploadedFile = files.file as UploadedFile;
     const whiteExtensions = ["jpg", "png", "gif", "jpeg"];
 
-    //Separar nombre de la extension
+
+    // //Separar nombre de la extension
     const nameArr = file.name.split(".");
     const ext = nameArr[nameArr.length - 1];
 
-    //Verificar extension
+    // //Verificar extension
     if (!whiteExtensions.includes(ext)) {
       return reject("Extension no permitida");
     }
@@ -29,9 +31,9 @@ export const fileUploadServer = (files: FileArray): Promise<string> => {
       fileName
     );
 
+
     file.mv(savePath,(err: Error) => {
       if (err) return reject(err);
-
 
       return resolve(savePath);
     });

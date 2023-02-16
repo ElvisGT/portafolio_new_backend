@@ -1,5 +1,5 @@
 import { Project } from "../models/project"
-import { Technology } from '../models/skill';
+import { Technology } from '../models/technology';
 
 export const validateID = async(id: string, model: string) => {
   switch (model) {

@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import helmet from "helmet";
 import fUpload from 'express-fileupload';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -20,9 +21,9 @@ export default class Server {
     this.app = express();
     this.port = process.env.PORT || 8080;
     this.paths = {
-      projects:'/projects',
-      technologies:'/technologies',
-      login:'/login'
+      projects:'/api/v1/projects',
+      technologies:'/api/v1/technologies',
+      login:'/api/v1/login'
     }
     
     //Conectar a la base de datos
@@ -39,6 +40,7 @@ export default class Server {
     this.app.use(cors());
     this.app.use(express.json());
     this.app.use(fUpload());
+    this.app.use(helmet());
   }
 
   private routes(){
@@ -49,7 +51,7 @@ export default class Server {
 
   public listen(){
     this.app.listen(this.port,() => {
-      console.log(`Servidor corriendo en el puerto http://localhost:${this.port}`);
+      console.log(`Servidor corriendo en el enlace http://localhost:${this.port}`);
     })
   }
 

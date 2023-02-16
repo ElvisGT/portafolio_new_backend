@@ -3,7 +3,7 @@ import { FileArray } from 'express-fileupload';
 import { fileUploadServer, 
           deleteFiles, 
           uploadCloudinary} from '../helpers';
-import { Technology } from "../models/skill";
+import { Technology } from "../models/technology";
 import { TechnologyType } from '../types';
 
 
@@ -32,36 +32,38 @@ const getTechID = async(req: Request,res: Response) => {
 }
 
 const createTech = async(req: Request,res: Response) => {
-  const {name}: TechnologyType = req.body;  
+  const {name,imgUri}: TechnologyType = req.body;  
     
-  //Tratamiento de imagenes
-  const files: FileArray = req.files as FileArray; 
-  const savedImg = await fileUploadServer(files)
-      .then((path: string) =>{
-        //Subida a cloudinary
-        return uploadCloudinary(path);
-      })
-      .then((img) => {
-        return img;
-      })
-      .catch((msg) => res.status(400).json({ msg }));
+  // //Tratamiento de imagenes
+  // const files: FileArray = req.files as FileArray; 
+  // const savedImg = await fileUploadServer(files)
+  //     .then((path: string) =>{
+  //       //Subida a cloudinary
+  //       return uploadCloudinary(path);
+  //     })
+  //     .then((img) => {
+  //       return img;
+  //     })
+  //     .catch((msg) => res.status(400).json({ msg }));
 
+  
   //Limpiar server
-  deleteFiles();
+  // deleteFiles();
 
 
-  //SaveData
+  // //SaveData
   const data: TechnologyType = {
     name,
-    imgUrl:savedImg as string
+    imgUri
   }
 
-  const save_tech = await new Technology(data);
-  save_tech.save();
+
+  const save_tech = new Technology(data);
+  await save_tech.save();
   
   res.status(201).json({
     ok:true,
-    msg:"Creado exitosamente",
+    save_tech
   })
 }
 
