@@ -34,44 +34,44 @@ const getProjectID = async(req: Request,res: Response) => {
 const createProject = async(req: Request,res: Response) => {
   const {name,
           description,
-          repo,
-          tag,
-          hashTags,
-          deploy}: ProjectType = req.body;  
+          stack,
+          link,
+          imgUri,
+          technologies
+          }: ProjectType = req.body;  
   
           
   //Tratamiento de imagenes
-  const files: FileArray = req.files as FileArray; 
-  const savedImg = await fileUploadServer(files)
-      .then((path: string) =>{
-        //Subida a cloudinary
-        return uploadCloudinary(path);
-      })
-      .then((img) => {
-        return img;
-      })
-      .catch((msg) => res.status(400).json({ msg }));
+  // const files: FileArray = req.files as FileArray; 
+  // const savedImg = await fileUploadServer(files)
+  //     .then((path: string) =>{
+  //       //Subida a cloudinary
+  //       return uploadCloudinary(path);
+  //     })
+  //     .then((img) => {
+  //       return img;
+  //     })
+  //     .catch((msg) => res.status(400).json({ msg }));
 
-  //Limpiar server
-  deleteFiles();
+  // //Limpiar server
+  // deleteFiles();
 
   //SaveData
   const data: ProjectType = {
     name,
     description,
-    repo,
-    deploy,
-    tag,
-    hashTags,
-    imgUrl: savedImg as string
+    link,
+    stack,
+    technologies,
+    imgUri
   }
 
-  const save_project = await new Project(data);
-  save_project.save();
+  const save_project = new Project(data);
+  await save_project.save();
   
   res.status(201).json({
     ok:true,
-    msg:"Creado exitosamente",
+    save_project,
   })
 }
 
@@ -88,7 +88,7 @@ const updateProjectID = async(req: Request,res: Response) => {
 
   await Project.findByIdAndUpdate(id,data);
 
-  res.json({
+  res.status(200).json({
     ok:true,
     msg:"Actualizado correctamente"
   })

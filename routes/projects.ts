@@ -24,7 +24,6 @@ router.get("/:id",[
 
 //Crear proyecto
 router.post("/",[
-  verifyJWT,
   check("name").custom((value) => validateName(value,"Project")),
   validation
 ],createProject);
