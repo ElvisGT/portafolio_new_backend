@@ -40,7 +40,6 @@ const createProject = async(req: Request,res: Response) => {
           technologies
           }: ProjectType = req.body;  
   
-          
   //Tratamiento de imagenes
   // const files: FileArray = req.files as FileArray; 
   // const savedImg = await fileUploadServer(files)
