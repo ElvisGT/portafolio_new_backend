@@ -51,7 +51,7 @@ export default class Server {
 
   public listen(){
     this.app.listen(this.port,() => {
-      console.log(`Servidor corriendo en el enlace http://localhost:${this.port}`);
+      console.log(`Servidor corriendo en el puerto: ${this.port}`);
     })
   }
 

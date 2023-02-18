@@ -10,7 +10,7 @@ const ProjectSchema: Schema = new Schema({
     type:String,
     required:true
   },
-  imgUrl:{
+  imgUri:{
     type:String,
   },
   link:{
