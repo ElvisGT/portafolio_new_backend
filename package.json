@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "cpFiles": "tsc && copyfiles --up 1 uploads/* dist/uploads",
+    "cpFiles": "yarn tsc && copyfiles --up 1 uploads/* dist/uploads",
     "start": "npm run cpFiles && node dist/index.js"
   },
   "keywords": [
