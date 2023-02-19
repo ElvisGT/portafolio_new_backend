@@ -31,6 +31,19 @@ const getProjectID = async(req: Request,res: Response) => {
   });
 }
 
+const getProjectStack = async(req: Request,res: Response) => {
+  const projectStack = req.query.projectStack as string;
+
+  const stackRegex = new RegExp(projectStack,'i');
+
+  const project = await Project.find({stack:stackRegex});
+  
+  res.json({
+    ok:true,
+    project
+  });
+}
+
 const createProject = async(req: Request,res: Response) => {
   const {name,
           description,
@@ -111,5 +124,6 @@ export {
   deleteProjectID,
   getProjects,
   getProjectID,
-  updateProjectID
+  updateProjectID,
+  getProjectStack
 }

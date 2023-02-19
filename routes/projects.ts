@@ -7,6 +7,7 @@ import { verifyJWT } from '../middlewares/verify-JWT';
 import { createProject, 
           deleteProjectID, 
           getProjectID, 
+          getProjectStack, 
           getProjects, 
           updateProjectID } from "../controllers/projects";
 
@@ -21,6 +22,9 @@ router.get("/:id",[
   check("id").custom((value) => validateID(value,'Project')),
   validation
 ],getProjectID);
+
+//Obtener proyecto por stack
+router.get("/search/stack",getProjectStack);
 
 //Crear proyecto
 router.post("/",[
