@@ -32,7 +32,7 @@ const getTechID = async(req: Request,res: Response) => {
 }
 
 const createTech = async(req: Request,res: Response) => {
-  const {name,imgUri}: TechnologyType = req.body;  
+  const {name,imgUri,stack}: TechnologyType = req.body;  
     
   // //Tratamiento de imagenes
   // const files: FileArray = req.files as FileArray; 
@@ -54,7 +54,8 @@ const createTech = async(req: Request,res: Response) => {
   // //SaveData
   const data: TechnologyType = {
     name,
-    imgUri
+    imgUri,
+    stack
   }
 
 

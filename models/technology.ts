@@ -10,6 +10,10 @@ const TechnologySchema: Schema = new Schema({
     type:String,
     required:true
   },
+  stack:{
+    type:string,
+    required:true
+  }
 });
 
 TechnologySchema.methods.toJSON = function(){
